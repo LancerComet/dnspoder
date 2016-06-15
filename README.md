@@ -1,6 +1,8 @@
 # dnspoder
 A simple Node.JS client for DNSPod.
 
+Please note that this is almost designed for Chinese people. All the console outputs are CHS. 
+
 ## Usage
   1. git clone.
   2. Setup your domain and account in "app.js".
