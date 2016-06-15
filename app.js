@@ -19,7 +19,7 @@ setInterval(updateDDNS, domainConfig.interval);
 updateDDNS();
 function updateDDNS () {
     dnspoder.getRecordID(domainConfig.domain, domainConfig.subname).then(function (recordID) {
-        dnspoder.updateDDNS(domainConfig.domain, recordID, domainConfig.subname, result.ip).then(result => {
+        dnspoder.updateDDNS(domainConfig.domain, recordID, domainConfig.subname, domainConfig.ip).then(result => {
             // Succeed.
         }, error => {
             // Failed.
