@@ -11,8 +11,7 @@ Please note that this is almost designed for Chinese people. All the console out
     const domainConfig = {
         domain: "",  // Example: "yourdomain.com"
         subname: "",  // Example: "app".  Then it will update "app.yourdomain.com".
-        ip: "",  // Target IP Address. Example: "172.16.0.1"
-                 // Please find another way to acquire your ip address.
+        ip: "",  // Target IP Address. Example: "172.16.0.1". Dnspoder will get ip itself.
         interval: 1000 * 60 * 5  // Update interval.
     };
   ```
