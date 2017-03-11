@@ -21,7 +21,6 @@ getIP().then(ip => {
 	updateDDNS()
 })
 
-
 function updateDDNS () {
   dnspoder.getRecordID(domainConfig.domain, domainConfig.subname).then(function (recordID) {
     dnspoder.updateDDNS(domainConfig.domain, recordID, domainConfig.subname, domainConfig.ip).then(result => {
