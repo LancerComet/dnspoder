@@ -1,13 +1,15 @@
 {
   "name": "dnspoder",
   "description": "A simple Node.JS client for DNSPod.",
-  "keywords": ["dnspod"],
+  "keywords": [
+    "dnspod"
+  ],
   "main": "app.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "LancerComet",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/LancerComet/dnspoder.git"
+    "type": "git",
+    "url": "https://github.com/LancerComet/dnspoder.git"
   }
 }
