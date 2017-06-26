@@ -1,59 +1,32 @@
-/*
- *  DNSPoder By LancerComet at 21:20, 2016.06.15.
- *  # Carry Your World # 
+/**
+ * DNSPoder is a dnspod client written in JavaScript.
+ * By LancerComet at 21:20, 2016.06.15.
+ * # Carry Your World #
+ *
+ * @author LancerComet
+ * @license MIT
  */
 
-global.TOKEN = ''  // This is the TOKEN of your DNSPod account.
-const http = require("http")
-const dnspoder = require("./dnspoder")
-const os = require("os")
+const config = require('./config')
+const dnspoder = require("./libs/dnspoder")
 
-const domainConfig = {
-  domain: '',  // Example: "yourdomain.com"
-  subname: '',  // Example: "app".  Then it will update "app.yourdomain.com".
-  ip: '',  // Target IP Address. Example: "172.16.0.1". Dnspoder will get ip itself.
-  interval: 1000 * 60 * 60  // Update interval.
-}
-
-// You can use either getIP() or getLocalIP() to accquire your IP. 
-getIP().then(ip => {
-  domainConfig.ip = ip
-  setInterval(updateDDNS, domainConfig.interval)
-	updateDDNS()
-})
-
-function updateDDNS () {
-  dnspoder.getRecordID(domainConfig.domain, domainConfig.subname).then(function (recordID) {
-    dnspoder.updateDDNS(domainConfig.domain, recordID, domainConfig.subname, domainConfig.ip).then(result => {
-      // Succeed.
-    }, error => {
-      // Failed.
-    })
+if (!config.ip) {
+  // You can use either getIP() or getLocalIP() to accquire your IP.
+  dnspoder.getIP().then(ip => {
+    config.ip = ip
+    update()
+  }).catch(error => {
+    console.error('[Dnspoder Error] Failed to get ip, dnspoder existed.')
+    console.error(error)
+    process.exit(1)
   })
+} else {
+  update()
 }
 
-function getIP () {
-	const ipRegexp = /(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)/
-  return new Promise((resolve, reject) => {
-    const request = http.request({
-	    host: '1212.ip138.com',
-	    port: 80,
-	    path: '/ic.asp',
-	    method: 'GET'
-	  }, result => {
-	    result.setEncoding('utf-8')
-	  	let res = ''
-		  result.on('data', function (chunk) { res += chunk })
-			result.on('end', function () {
-				resolve(res.match(ipRegexp)[0])
-			})
-		})
-
-		request.end()
-	})
-}
-
-function getLocalIP () {
-  const target = 'eth0'
-  return os.networkInterfaces()[target][0].address
+function update () {
+  dnspoder.getRecordID(config.domain, config.subname).then(recordID =>
+      dnspoder.updateDDNS(config.domain, recordID, config.subname, config.ip)
+        .then(() => setTimeout(update, config.interval))
+    )
 }
