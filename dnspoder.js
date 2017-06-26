@@ -44,7 +44,7 @@ function getRecordList (domain, subDomain) {
 function getRecordID (domain, subDomain) {
   return new Promise((resolve, reject) => {
     getRecordList(domain, subDomain).then(function (result) {
-      const recordID = result.records[0].id;
+      const recordID = result.domain.id;
       resolve(recordID);
     }, function (error) {
       console.log("获取记录 ID 失败：");

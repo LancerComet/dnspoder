@@ -3,17 +3,19 @@
  *  # Carry Your World # 
  */
 
-global.TOKEN = "";  // This is the TOKEN of your DNSPod account.
-const http = require("http");
+global.TOKEN = ''  // This is the TOKEN of your DNSPod account.
+const http = require("http")
 const dnspoder = require("./dnspoder")
+const os = require("os")
 
 const domainConfig = {
-  domain: "",  // Example: "yourdomain.com"
-  subname: "",  // Example: "app".  Then it will update "app.yourdomain.com".
-  ip: "",  // Target IP Address. Example: "172.16.0.1". Dnspoder will get ip itself.
+  domain: '',  // Example: "yourdomain.com"
+  subname: '',  // Example: "app".  Then it will update "app.yourdomain.com".
+  ip: '',  // Target IP Address. Example: "172.16.0.1". Dnspoder will get ip itself.
   interval: 1000 * 60 * 60  // Update interval.
-};
+}
 
+// You can use either getIP() or getLocalIP() to accquire your IP. 
 getIP().then(ip => {
   domainConfig.ip = ip
   setInterval(updateDDNS, domainConfig.interval)
@@ -26,8 +28,8 @@ function updateDDNS () {
       // Succeed.
     }, error => {
       // Failed.
-    });
-  });
+    })
+  })
 }
 
 function getIP () {
@@ -40,13 +42,18 @@ function getIP () {
 	    method: 'GET'
 	  }, result => {
 	    result.setEncoding('utf-8')
-	  	let res = ""
-		  result.on("data", function (chunk) { res += chunk })
-			result.on("end", function () {
+	  	let res = ''
+		  result.on('data', function (chunk) { res += chunk })
+			result.on('end', function () {
 				resolve(res.match(ipRegexp)[0])
 			})
 		})
 
 		request.end()
 	})
+}
+
+function getLocalIP () {
+  const target = 'eth0'
+  return os.networkInterfaces()[target][0].address
 }
