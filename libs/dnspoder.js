@@ -120,10 +120,13 @@ function updateDDNS (domain, recordID, subDomain, ip) {
     const requestData = Object.assign({
       domain,
       record_id: recordID,
-      sub_domain: subDomain,
       record_line: '默认',
       value: ip
     }, commonParam)
+
+    if (subDomain) {
+      requestData.sub_domain = subDomain
+    }
 
     postRequest({
       path: '/Record.Ddns',
